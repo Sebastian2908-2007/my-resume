@@ -1,0 +1,26 @@
+{
+  "name": "my-resume",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server/server.js",
+  "scripts": {
+    "start": "node server/server.js",
+    "develop": "concurrently \"cd server && npm run watch\" \"cd client && npm start\"",
+    "install": "cd server && npm i && cd ../client && npm i",
+    "build": "cd client && npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Sebastian2908-2007/my-resume.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Sebastian2908-2007/my-resume/issues"
+  },
+  "homepage": "https://github.com/Sebastian2908-2007/my-resume#readme",
+  "devDependencies": {
+    "concurrently": "^7.2.2"
+  }
+}
