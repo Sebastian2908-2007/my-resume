@@ -1,4 +1,5 @@
 const {Contact, FileUpload} = require('../models');
+const {signToken} = require('../utils/contactAuth');
 
 const resolvers = {
     Query: {
@@ -10,7 +11,10 @@ const resolvers = {
     Mutation: {
         addContact: async (parent,args) => {
             const contact = await Contact.create(args);
-            return contact;
+            const contactToken = signToken(contact);
+            console.log(contactToken);
+            /**token name below must be the same in contactAuth type in type defs always else the token will return null */
+            return { contact, contactToken };
         }
     }
 };

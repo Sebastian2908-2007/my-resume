@@ -21,12 +21,17 @@ const typeDefs = gql`
     pictures: [FileUpload]
   }
 
+  type contactAuth {
+    contactToken: ID
+    contact: Contact
+  }
+
   type Query {
    helloWorld: String
   }  
 
   type Mutation {
-   addContact(firstName: String!, lastName: String!, email: String!, password: String! descriptionText: String!, phone: String): Contact 
+   addContact(firstName: String!, lastName: String!, email: String!, password: String! descriptionText: String!, phone: String): contactAuth 
   }
 `;
 
