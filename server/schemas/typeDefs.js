@@ -15,6 +15,7 @@ const typeDefs = gql`
     firstName: String
     lastName: String
     email: String
+    password: String
     descriptionText: String
     phone: String
     pictures: [FileUpload]
@@ -25,7 +26,7 @@ const typeDefs = gql`
   }  
 
   type Mutation {
-   addContact(firstName: String!, lastName: String!, email: String!, descriptionText: String!, phone: String): Contact 
+   addContact(firstName: String!, lastName: String!, email: String!, password: String! descriptionText: String!, phone: String): Contact 
   }
 `;
 

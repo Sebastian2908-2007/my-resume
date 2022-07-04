@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 const { Schema, model } = mongoose;
+const FileUpload = require('./FileUpload');
+const bcrypt = require('bcrypt');
 
 const contactSchema = new Schema({
   firstName: {
@@ -18,6 +20,11 @@ const contactSchema = new Schema({
     unique: true,
     match: [/.+@.+\..+/, 'Must match an email address!']
   },
+  password: {
+   type: String,
+   required: true,
+   match: [/^(?=.{8,}$)(?=.*?[a-z])(?=.*?[A-Z])(?=.*?[0-9])(?=.*?\W).*$/,'password must contain at least 1 uppercase, 1 lowercase, 1 digit, 1 special character and have a length of at least of 8']
+  },
   descriptionText: {
     type: String,
     required: 'please add project description',
@@ -28,13 +35,24 @@ const contactSchema = new Schema({
     type: String,
     required: false,
     trim: true,
-    match: [ /^\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}$/, 'number must match format +1 (615) 243-5172  ']
+    match: [/^(\()?\d{3}(\))?(-|\s)?\d{3}(-|\s)\d{4}$/, 'number must match phone number format ie. (123) 456-7890 or 123-456-7890']
   },
-  pictures: [{
-    type: Schema.Types.ObjectId,
-    ref: 'FileUpload'
-  }]
+  pictures: [FileUpload.schema]
 });
+
+// set up pre-save middleware to create a password
+contactSchema.pre('save', async function(next) {
+    if (this.isNew || this.isModified('password')) {
+        const saltRounds = 11;
+        this.password = await bcrypt.hash(this.password, saltRounds)
+    }
+    next();
+});
+
+// compare the incoming password with the hashed password
+contactSchema.methods.isCorrectPassword = async function(password) {
+    return bcrypt.compare(password, this.password);
+};
 
 const Contact = model('Contact', contactSchema);
 
