@@ -1,4 +1,4 @@
-const Contact = require('../models');
+const {Contact, FileUpload} = require('../models');
 
 const resolvers = {
     Query: {
@@ -7,6 +7,12 @@ const resolvers = {
             return hello;
         }
     },
+    Mutation: {
+        addContact: async (parent,args) => {
+            const contact = await Contact.create(args);
+            return contact;
+        }
+    }
 };
 
 module.exports = resolvers;
