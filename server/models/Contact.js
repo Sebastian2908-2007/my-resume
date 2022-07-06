@@ -2,6 +2,8 @@ const mongoose = require('mongoose');
 const { Schema, model } = mongoose;
 const FileUpload = require('./FileUpload');
 const bcrypt = require('bcrypt');
+require('dotenv').config();
+const admin = process.env.ADMIN_EMAIL
 
 const contactSchema = new Schema({
   firstName: {
@@ -37,10 +39,25 @@ const contactSchema = new Schema({
     trim: true,
     match: [/^(\()?\d{3}(\))?(-|\s)?\d{3}(-|\s)\d{4}$/, 'number must match phone number format ie. (123) 456-7890 or 123-456-7890']
   },
+  isAdmin: {
+    type: Boolean,
+    default: false
+  },
   pictures: [FileUpload.schema]
 });
 
-// set up pre-save middleware to create a password
+/*set up hook to set admin boolean to true if correct email is entered on create, this should work well */
+/*even if someone knew the correct email because all emails must be unique */
+contactSchema.pre('save', async function(next) {
+       if (this.isNew || this.isModified('email')) {
+          if (this.email === admin ) {
+            this.isAdmin = true;
+          }
+       }
+       next();
+});
+
+/* set up pre-save middleware to create a password */
 contactSchema.pre('save', async function(next) {
     if (this.isNew || this.isModified('password')) {
         const saltRounds = 11;
@@ -49,7 +66,7 @@ contactSchema.pre('save', async function(next) {
     next();
 });
 
-// compare the incoming password with the hashed password
+/* compare the incoming password with the hashed password */
 contactSchema.methods.isCorrectPassword = async function(password) {
     return bcrypt.compare(password, this.password);
 };

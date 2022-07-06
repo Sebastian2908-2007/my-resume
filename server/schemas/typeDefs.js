@@ -18,6 +18,7 @@ const typeDefs = gql`
     password: String
     descriptionText: String
     phone: String
+    isAdmin: Boolean
     pictures: [FileUpload]
   }
 
