@@ -34,6 +34,7 @@ const typeDefs = gql`
   type Mutation {
    addContact(firstName: String!, lastName: String!, email: String!, password: String! descriptionText: String!, phone: String): ContactAuth 
    loginContact(email: String!, password: String!): ContactAuth
+   updateContact(contactId: ID!, firstName: String, lastName: String, email: String, descriptionText: String, phone: String): Contact
   }
 `;
 

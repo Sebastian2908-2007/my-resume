@@ -12,7 +12,7 @@ const resolvers = {
                 
                
             }
-            throw new AuthenticationError('improper credentials');
+            throw new AuthenticationError('No permissions');
         }
     },
     Mutation: {
@@ -39,10 +39,167 @@ const resolvers = {
           // i have changed all instances of contactToken to token and contact to user but now looking at this
           // i think maybe i am having issues because I am returning user first here and declaring it second in contact auth
           return {user,token};
-        }
+        },
+        updateContact: async (parent, args, context) => {
+            if(context.user.isAdmin || context.user._id === args.contactId) {
+              const updatedContact = await Contact.findOneAndUpdate(
+                {  _id: args.contactId },
+                { 
+                firstName: args.firstName,
+                 lastName: args.lastName,
+                 email: args.email,
+                 descriptionText: args.descriptionText,
+                 phone: args.phone,
+                },
+                { new: true, runValidators: true }
+              )
+              return updatedContact;
+            }
+            throw new AuthenticationError('No permissions');
+        },
     }
 };
 
 module.exports = resolvers;
 
 
+/*
+admin info
+{
+  "data": {
+    ADMIN I USE HAS same Password as non admin I use which is Contactauth88#
+    "loginContact": {
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImZpcnN0TmFtZSI6Im5ld2VzdDUiLCJsYXN0TmFtZSI6ImFkbWluIiwiZW1haWwiOiJuZXdlc3Q3QWRtaW5AZW1haWwuY29tIiwiaXNBZG1pbiI6dHJ1ZSwiX2lkIjoiNjJjNjEzMjY5MTY2NTBjZTg4NDdlODcwIn0sImlhdCI6MTY1NzIxMjYyOCwiZXhwIjoxNjU3MjI3MDI4fQ.XY2Xqkmsl2NyzxVFebdU0J2DxtBxI1epV1JV_QGPDLs",
+      "user": {
+        "_id": "62c61326916650ce8847e870",
+        "email": "newest7Admin@email.com",
+        "descriptionText": "payload test!",
+        "firstName": "newest5",
+        "lastName": "admin",
+        "phone": "888-549-4190",
+        "isAdmin": true
+      }
+    }
+  }
+}
+*******regular user I use***************
+{
+  "data": {
+    "updateContact": {
+      "_id": "62c5ca5aadeb647b82ed45d5",
+      "firstName": "AdminNoUp",
+      "lastName": "self",
+      "email": "NOo@admin.com",
+      "descriptionText": "this is non admin updating self",
+      "phone": "385-549-4194"
+    }
+  }
+}
+LOGIN PASS: Contactauth88#
+
+*******CONTACTS************************
+{
+  "data": {
+    "getContacts": [
+      {
+        "_id": "62c23064501387010abf871c",
+        "firstName": "Bill",
+        "lastName": "Jones",
+        "phone": "+1 (615) 243-5172",
+        "descriptionText": "this is my desc",
+        "email": "bill@jones.com",
+        "password": null,
+        "isAdmin": false,
+        "pictures": []
+      },
+      {
+        "_id": "62c243082819fd97bed20b5a",
+        "firstName": "jill",
+        "lastName": "jones",
+        "phone": "123-456-7890",
+        "descriptionText": "this is updated jill jones",
+        "email": "JJillthe@jones.com",
+        "password": "$2b$11$oJbWx1O6LKUcliMtNK2riOvwyK0480vfZ9vKEnXahYbbRGMFDs/hS",
+        "isAdmin": false,
+        "pictures": []
+      },
+      {
+        "_id": "62c2457b2819fd97bed20b62",
+        "firstName": "Till",
+        "lastName": "Mones",
+        "phone": "1 (888) 549-4194",
+        "descriptionText": "this is Till I want an awesome App Sebastian!",
+        "email": "Till@Mones.com",
+        "password": "$2b$11$Rpfp2VHm.gHulm42mljKLuG6gyxztXRs9AOubl9DLCym91LopkaUK",
+        "isAdmin": false,
+        "pictures": []
+      },
+      {
+        "_id": "62c245ae2819fd97bed20b64",
+        "firstName": "ill",
+        "lastName": "Mones",
+        "phone": "1 (888) 5494194",
+        "descriptionText": "this is Till I want an awesome App Sebastian!",
+        "email": "ill@Mones.com",
+        "password": "$2b$11$XhiD25XRSQqaiCD.IeqDj.AVdWzqJEOGvD1uCne7k01npTJS384jG",
+        "isAdmin": false,
+        "pictures": []
+      },
+      {
+        "_id": "62c245e62819fd97bed20b66",
+        "firstName": "ll",
+        "lastName": "Mones",
+        "phone": "1 888 5494194",
+        "descriptionText": "this is Till I want an awesome App Sebastian!",
+        "email": "ll@Mones.com",
+        "password": "$2b$11$xfzTQl4aBqCqW0fiejzRx.IZvBNp4kgNvzReFB8f6yDp6RtLSCT02",
+        "isAdmin": false,
+        "pictures": []
+      },
+      {
+        "_id": "62c246122819fd97bed20b68",
+        "firstName": "jl",
+        "lastName": "Mones",
+        "phone": "18885494194",
+        "descriptionText": "this is Till I want an awesome App Sebastian!",
+        "email": "jj@Mones.com",
+        "password": "$2b$11$Yhdvm..mhqN3C1UXnpgQXeSl7sO/PJkamY49WQ.aA6xcTYtyom/c.",
+        "isAdmin": false,
+        "pictures": []
+      },
+      {
+        "_id": "62c246242819fd97bed20b6a",
+        "firstName": "j",
+        "lastName": "Mones",
+        "phone": "188854944",
+        "descriptionText": "this is Till I want an awesome App Sebastian!",
+        "email": "j@Mones.com",
+        "password": "$2b$11$eP6Ow59W4lWOfnE13e/ZDuKhreM0QjhoSSbT7QbkxXUJxbAxxg3h2",
+        "isAdmin": false,
+        "pictures": []
+      },
+      {
+        "_id": "62c2491581b948bcb8911e7c",
+        "firstName": "tj",
+        "lastName": "Mones",
+        "phone": "8885494194",
+        "descriptionText": "this is Till I want an awesome App Sebastian!",
+        "email": "tj@Mones.com",
+        "password": "$2b$11$pP7ZiSxHm8d.nRWiAtOrm.kfF45aIcvkcJoVkpi/yOHidenKwh50y",
+        "isAdmin": false,
+        "pictures": []
+      },
+      {
+        "_id": "62c24a5bf592aad4d04e5381",
+        "firstName": "thh",
+        "lastName": "Mones",
+        "phone": "(888) 549 4194",
+        "descriptionText": "this is Till I want an awesome App Sebastian!",
+        "email": "thh@Mones.com",
+        "password": "$2b$11$toIWez8spB6p934hPibWG.D5RPIfPFmDvog3X/LQZiV4x3UtdU1OC",
+        "isAdmin": false,
+        "pictures": []
+      },
+     
+      
+*/
