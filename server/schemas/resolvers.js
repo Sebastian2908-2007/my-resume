@@ -57,6 +57,14 @@ const resolvers = {
             }
             throw new AuthenticationError('No permissions');
         },
+        deleteContact: async (parent, {contactId}, context) => {
+             if(context.user.isAdmin || context.user._id === contactId) {
+                const deletedContact = await Contact.deleteOne({ _id: contactId });
+                console.log(deletedContact);
+                return deletedContact;
+             }
+             throw new AuthenticationError('No permissions');
+        },
     }
 };
 
