@@ -5,7 +5,7 @@ const {signToken} = require('../utils/contactAuth');
 const resolvers = {
     Query: {
         getContacts: async (parent, {firstName}, context) => {
-            if (context.user) {
+            if (context.user.isAdmin) {
                  console.log(context);
                 const params = firstName ? { firstName }: {};
                 return await Contact.find(params).sort({ createdAt: -1 });
