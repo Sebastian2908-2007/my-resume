@@ -1,8 +1,14 @@
 const {Contact, FileUpload} = require('../models');
 const { AuthenticationError } = require('apollo-server-express');
+const { GraphQLUpload } = require('graphql-upload');
 const {signToken} = require('../utils/contactAuth');
 
+
+
 const resolvers = {
+      /* This maps the `Upload` scalar to the implementation provided
+   by the `graphql-upload` package.*/
+  Upload: GraphQLUpload,
     Query: {
         getContacts: async (parent, {firstName}, context) => {
             if (context.user.isAdmin) {
@@ -65,6 +71,9 @@ const resolvers = {
              }
              throw new AuthenticationError('No permissions');
         },
+        singleFileUpload: async (parent, {file}, context) => {
+          return file;
+        }
     }
 };
 

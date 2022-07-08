@@ -1,5 +1,9 @@
 const express = require('express');
 const { ApolloServer } = require('apollo-server-express');
+/*import graphqlUpload express from grapql-upload */
+/*graphql-upload library doesn't have any main index.js re-export for all of its functions. It has direct file exports for all the specific functionalities. 
+hence the graphql-upload/graphqlUploadExpress.js in require statement */
+const { graphqlUploadExpress } = require('graphql-upload')
 const path = require('path');
 /**import typedefs and resovers for apollo-server-express consumption */
 const { typeDefs, resolvers } = require('./schemas');
@@ -12,7 +16,7 @@ const PORT = process.env.PORT || 3001;
 const app = express();
 
 /*apollo sever start function*/
-const startServer = async () => {
+  const startServer = async () => {
     const server = new ApolloServer({
         typeDefs,
         resolvers,
@@ -20,16 +24,21 @@ const startServer = async () => {
         context: authMiddleware
     });
 
-    /* start apollo server */
+    // start apollo server 
     await server.start();
 
-    /* integrate with apollo server with express as middleware */
+   //this comes from graphql-upload and is needed by express for file uploads 
+    //This middleware should be added before calling `applyMiddleware`. 
+    app.use(graphqlUploadExpress());
+
+    // integrate with apollo server with express as middleware 
     server.applyMiddleware({ app });
 
-    /* log where we can go to test our gql api */
+    // log where we can go to test our gql api 
     console.log(`Use graphQL at http://localhost:${PORT}${server.graphqlPath}`);
 
 };
+
 /* initialize apollo server */
 startServer();
 
