@@ -91,18 +91,7 @@ admin info
   }
 }
 *******regular user I use***************
-{
-  "data": {
-    "updateContact": {
-      "_id": "62c5ca5aadeb647b82ed45d5",
-      "firstName": "AdminNoUp",
-      "lastName": "self",
-      "email": "NOo@admin.com",
-      "descriptionText": "this is non admin updating self",
-      "phone": "385-549-4194"
-    }
-  }
-}
+
 LOGIN PASS: Contactauth88#
 
 *******CONTACTS************************
