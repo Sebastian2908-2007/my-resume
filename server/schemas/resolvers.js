@@ -72,7 +72,18 @@ const resolvers = {
              throw new AuthenticationError('No permissions');
         },
         singleFileUpload: async (parent, {file}, context) => {
-          return file;
+          if(file) {
+            console.log(file);
+         const newFile = await FileUpload.create({
+          ETag: file.name,
+          Location: file.type,
+          key: '56454',
+          Key: '5454590',
+          Bucket: 'Fake Bucket'
+         });
+         return newFile;
+        }
+        console.log('it ran but is broke');
         }
     }
 };

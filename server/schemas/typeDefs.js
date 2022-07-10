@@ -3,8 +3,12 @@ const { gql } = require('apollo-server-express');
 const typeDefs = gql`
  # The implementation for this scalar is provided by the
   # 'GraphQLUpload' export from the 'graphql-upload' package
-   scalar Upload
-    
+ scalar Upload
+
+ type TestFile {
+  name: String
+  type: String
+ }
 
   type FileUpload {
     _id: ID
@@ -41,7 +45,7 @@ const typeDefs = gql`
    loginContact(email: String!, password: String!): ContactAuth
    updateContact(contactId: ID!, firstName: String, lastName: String, email: String, descriptionText: String, phone: String): Contact
    deleteContact(contactId: ID!): Contact
-   singleFileUpload(file: Upload!): FileUpload! 
+   singleFileUpload(file: Upload!): FileUpload 
   }
 `;
 

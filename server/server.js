@@ -21,6 +21,7 @@ const app = express();
         typeDefs,
         resolvers,
         csrfPrevention: true,
+        cache: 'bounded',
         context: authMiddleware
     });
 
