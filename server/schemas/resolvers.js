@@ -71,19 +71,19 @@ const resolvers = {
              }
              throw new AuthenticationError('No permissions');
         },
-        singleFileUpload: async (parent, {file}, context) => {
-          if(file) {
-            console.log(file);
+        singleFileUpload: async (parent, {ETag, Location, key, Key, Bucket}, context) => {
+          if(context.user) {
          const newFile = await FileUpload.create({
-          ETag: file.name,
-          Location: file.type,
-          key: '56454',
-          Key: '5454590',
-          Bucket: 'Fake Bucket'
+          ETag: ETag,
+          Location: Location,
+          key: key,
+          Key: Key, 
+          Bucket: Bucket
          });
          return newFile;
         }
-        console.log('it ran but is broke');
+        throw new AuthenticationError('No permissions');
+       
         }
     }
 };
@@ -95,9 +95,8 @@ module.exports = resolvers;
 admin info
 {
   "data": {
-    ADMIN I USE HAS same Password as non admin I use which is Contactauth88#
     "loginContact": {
-      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImZpcnN0TmFtZSI6Im5ld2VzdDUiLCJsYXN0TmFtZSI6ImFkbWluIiwiZW1haWwiOiJuZXdlc3Q3QWRtaW5AZW1haWwuY29tIiwiaXNBZG1pbiI6dHJ1ZSwiX2lkIjoiNjJjNjEzMjY5MTY2NTBjZTg4NDdlODcwIn0sImlhdCI6MTY1NzIxMjYyOCwiZXhwIjoxNjU3MjI3MDI4fQ.XY2Xqkmsl2NyzxVFebdU0J2DxtBxI1epV1JV_QGPDLs",
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImZpcnN0TmFtZSI6Im5ld2VzdDUiLCJsYXN0TmFtZSI6ImFkbWluIiwiZW1haWwiOiJuZXdlc3Q3QWRtaW5AZW1haWwuY29tIiwiaXNBZG1pbiI6dHJ1ZSwiX2lkIjoiNjJjNjEzMjY5MTY2NTBjZTg4NDdlODcwIn0sImlhdCI6MTY1ODA5Nzc5MywiZXhwIjoxNjU4MTEyMTkzfQ.WqpaFGqMfEK8b-1BAA8jW1Q7GIKg0s27u3XGvw1UXl4",
       "user": {
         "_id": "62c61326916650ce8847e870",
         "email": "newest7Admin@email.com",

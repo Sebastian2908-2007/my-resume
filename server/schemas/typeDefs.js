@@ -45,7 +45,7 @@ const typeDefs = gql`
    loginContact(email: String!, password: String!): ContactAuth
    updateContact(contactId: ID!, firstName: String, lastName: String, email: String, descriptionText: String, phone: String): Contact
    deleteContact(contactId: ID!): Contact
-   singleFileUpload(file: Upload!): FileUpload 
+   singleFileUpload(ETag:String, Location:String, key:String, Key:String, Bucket:String): FileUpload 
   }
 `;
 

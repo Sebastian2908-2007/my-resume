@@ -7,14 +7,7 @@ import {ADD_FILE} from './utils/mutations';
 
 function TestUpload() {
     const [file, setFile] = useState(null);
-    const [addFile, {error}] = useMutation(ADD_FILE,{
-        context: {
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "multipart/form-data" 
-            }
-        }
-    });
+    const [addFile, {error}] = useMutation(ADD_FILE);
   
     const handleChange = event => {
       setFile(event.target.files[0]);
@@ -23,15 +16,10 @@ function TestUpload() {
     const handleSubmit = async event => {
       event.preventDefault();
       console.log(file);
-      const formData = new FormData();
-      formData.append('file', {
-        name: new Date(),
-        uri: file,
-        type: 'image/jpg'
-      });
+    
        const {data} = await addFile({
         variables: { 
-            file: formData
+            file: file
         }
       });
 if(data) {
