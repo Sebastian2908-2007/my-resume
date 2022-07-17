@@ -72,7 +72,7 @@ const resolvers = {
              throw new AuthenticationError('No permissions');
         },
         singleFileUpload: async (parent, {ETag, Location, key, Key, Bucket}, context) => {
-          if(context.user) {
+          //if(context.user) {
          const newFile = await FileUpload.create({
           ETag: ETag,
           Location: Location,
@@ -81,7 +81,7 @@ const resolvers = {
           Bucket: Bucket
          });
          return newFile;
-        }
+        //}
         throw new AuthenticationError('No permissions');
        
         }

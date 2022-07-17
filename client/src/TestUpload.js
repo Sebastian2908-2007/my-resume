@@ -19,7 +19,11 @@ function TestUpload() {
     
        const {data} = await addFile({
         variables: { 
-            file: file
+            ETag:'frontendtag',
+            Location: 'frontendlocale',
+            key:'littlefrontendkey',
+            Key:'bigfrontKey',
+            Bucket:'fakefrontendBucket'
         }
       });
 if(data) {
