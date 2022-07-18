@@ -1,9 +1,6 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { ApolloProvider, ApolloClient,createHttpLink, from } from '@apollo/client';
-// im getting this from apollo-cache-inmemeory instead of apollo-client to accomidate my file uploads
 import { InMemoryCache } from '@apollo/client/cache'
-// im getting this from apollo-upload-client instead createHttpLink from apollo-client to accomidate file uploads
-//import { createUploadLink } from 'apollo-upload-client';
 import { setContext } from '@apollo/client/link/context';
 import TestUpload from './TestUpload';
 import { onError } from "@apollo/client/link/error";

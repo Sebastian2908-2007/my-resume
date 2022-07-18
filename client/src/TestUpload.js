@@ -1,13 +1,11 @@
 import {useState} from 'react';
-import {useMutation} from '@apollo/client';
-import {ADD_FILE} from './utils/mutations';
-// once file is submitted start with console logging it 
-// once its logged we can get the fields associated with it to make a temp typedef
-// so we can then tes the mutation 
+//import {useMutation} from '@apollo/client';
+//import {ADD_FILE} from './utils/mutations';
+import {s3Upload} from './utils/s3';
 
 function TestUpload() {
     const [file, setFile] = useState(null);
-    const [addFile, {error}] = useMutation(ADD_FILE);
+    //const [addFile, {error}] = useMutation(ADD_FILE);
   
     const handleChange = event => {
       setFile(event.target.files[0]);
@@ -16,14 +14,15 @@ function TestUpload() {
     const handleSubmit = async event => {
       event.preventDefault();
       console.log(file);
-    
-       const {data} = await addFile({
+      const myUpload = await s3Upload(file);
+      console.log(myUpload);
+       /*const {data} = await addFile({
         variables: { 
-            ETag:'frontendtag',
-            Location: 'frontendlocale',
-            key:'littlefrontendkey',
-            Key:'bigfrontKey',
-            Bucket:'fakefrontendBucket'
+            ETag:'frontendtag3',
+            Location: 'frontendlocale3',
+            key:'littlefrontendkey3',
+            Key:'bigfrontKey3',
+            Bucket:'fakefrontendBucket3'
         }
       });
 if(data) {
@@ -32,10 +31,10 @@ if(data) {
 
       if(error) {
         console.log(error);
-      }
+      }*/
      
     };
-
+    
     return (
        
      <form encType='multipart/form-data'>
