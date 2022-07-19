@@ -34,13 +34,17 @@ if(data) {
       }*/
      
     };
+    const myImage="https://my-resume1177.s3.amazonaws.com/Screenshot (3051).png"
     
     return (
-       
+      <div>
      <form encType='multipart/form-data'>
      <input type="file" name="file" onChange={handleChange}/>
      <button onClick={handleSubmit}>submit</button> 
      </form>
+     
+     <img height='200px' width='200px' src={myImage} alt='my'/>
+     </div>
     )
 };
 
