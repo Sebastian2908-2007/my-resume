@@ -4,8 +4,8 @@ const secret = process.env.JWT_SECRET;
 const expiration = '4h';
 
 module.exports = {
-  signToken: function({firstName, lastName, email, isAdmin, _id}) {
-    const payload = { firstName,lastName,email,isAdmin,_id };
+  signToken: function({firstName, lastName, email, isAdmin, isClient, _id}) {
+    const payload = { firstName,lastName,email,isAdmin,isClient,_id };
     console.log(payload);
     return jwt.sign({ data: payload }, secret,{ expiresIn: expiration });
   },

@@ -1,7 +1,14 @@
 const { gql } = require('apollo-server-express');
 
 const typeDefs = gql`
- 
+  
+  type Review {
+    _id: ID
+    reviewText: String
+    createdAt: String
+    firstName: String
+    lastName: String
+  }
 
   type FileUpload {
     _id: ID
@@ -21,6 +28,7 @@ const typeDefs = gql`
     descriptionText: String
     phone: String
     isAdmin: Boolean
+    isClient: Boolean
     files: [FileUpload]
   }
 
@@ -34,12 +42,13 @@ const typeDefs = gql`
   }  
 
   type Mutation {
-   addContact(firstName: String!, lastName: String!, email: String!, password: String! descriptionText: String!, phone: String): ContactAuth 
+   addContact(firstName: String!, lastName: String!, email: String!, password: String! descriptionText: String!, phone: String, isClient: Boolean): ContactAuth 
    loginContact(email: String!, password: String!): ContactAuth
    updateContact(contactId: ID!, firstName: String, lastName: String, email: String, descriptionText: String, phone: String): Contact
    deleteContact(contactId: ID!): Contact
    singleFileUpload(ETag:String, Location:String, key:String, Key:String, Bucket:String): Contact 
    removeFileById(fileId: ID!): Contact
+   addReview(reviewText: String!, firstName: String!, lastName: String!): Review
   }
 `;
 
@@ -48,23 +57,17 @@ module.exports = typeDefs;
 /*
 {
   "data": {
-    "singleFileUpload": {
-      "_id": "62d971319f74a55cfdb18192",
-      "firstName": "upload",
-      "lastName": "contact",
-      "descriptionText": "this will be first to add picture to data!",
-      "email": "upl2@email.com",
-      "phone": "385-549-4194",
-      "files": [
-        {
-          "_id": "62d996a5113f9ed52ff1dad4",
-          "ETag": "mytag83",
-          "Bucket": "88my Great WORKING Bucket",
-          "key": "88WORKINGpic.png",
-          "Key": "88WORKINGNewpic.png",
-          "Location": "https//:workingpic.com/pic"
-        }
-      ]
+    "loginContact": {
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImZpcnN0TmFtZSI6IlJlYWwiLCJsYXN0TmFtZSI6IkNsaWVudCIsImVtYWlsIjoiYUNsaWVudEBlbWFpbC5jb20iLCJpc0FkbWluIjpmYWxzZSwiaXNDbGllbnQiOnRydWUsIl9pZCI6IjYyZDlkMzJhYmVlNmQ3NGU0N2E1OWMyZCJ9LCJpYXQiOjE2NTg0NDI5MjAsImV4cCI6MTY1ODQ1NzMyMH0.8xWCjJqVe3IPCDCmtu1tWynn3rtj2pr-_cLhqKkV3to",
+      "user": {
+        "_id": "62d9d32abee6d74e47a59c2d",
+        "email": "aClient@email.com",
+        "descriptionText": "this will be first to add picture to data!",
+        "firstName": "Real",
+        "lastName": "Client",
+        "phone": "385-549-4194",
+        "isAdmin": false
+      }
     }
   }
 }

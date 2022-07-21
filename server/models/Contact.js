@@ -43,6 +43,10 @@ const contactSchema = new Schema({
     type: Boolean,
     default: false
   },
+  isClient: {
+    type: Boolean,
+    default: false
+  },
   files: [FileUpload.schema]
 });
 

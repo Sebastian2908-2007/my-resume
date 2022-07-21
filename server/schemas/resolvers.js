@@ -1,4 +1,4 @@
-const {Contact, FileUpload} = require('../models');
+const {Contact, FileUpload, Review} = require('../models');
 const { AuthenticationError } = require('apollo-server-express');
 const {signToken} = require('../utils/contactAuth');
 
@@ -97,6 +97,13 @@ const resolvers = {
            return contact;
           }
           throw new AuthenticationError('no permissions');
+        },
+        addReview: async (parent, args, context)  => {
+          if(context.user.isClient) {
+            const review = await Review.create(args);
+            return review;
+          }
+          throw new AuthenticationError('you must be a paying customer to leave a review');
         }
     }
 };
@@ -146,106 +153,22 @@ LOGIN PASS: Contactauth88#
 *******CONTACTS************************
 {
   "data": {
-    "getContacts": [
-      {
-        "_id": "62c23064501387010abf871c",
-        "firstName": "Bill",
-        "lastName": "Jones",
-        "phone": "+1 (615) 243-5172",
-        "descriptionText": "this is my desc",
-        "email": "bill@jones.com",
-        "password": null,
+    "addContact": {
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImZpcnN0TmFtZSI6Ik5vdCIsImxhc3ROYW1lIjoiQ2xpZW50IiwiZW1haWwiOiJub0NsaWVudEBlbWFpbC5jb20iLCJpc0FkbWluIjpmYWxzZSwiaXNDbGllbnQiOmZhbHNlLCJfaWQiOiI2MmQ5ZDg3OWRiNWFlMzViZGMxNzdlMWYifSwiaWF0IjoxNjU4NDQzODk3LCJleHAiOjE2NTg0NTgyOTd9.kMT80juhN7W0GdXQ4Mqsf-dBuoJ0aKqUTQBvL9Ww7Gs",
+      "user": {
+        "firstName": "Not",
+        "lastName": "Client",
+        "email": "noClient@email.com",
+        "password": "$2b$11$UmtfUoBhhdrh2DGp7y1dP.BjG6GKAKQl24y/Km6ZoUlzdoZwB.QcC",
+        "descriptionText": "this will be first to add picture to data!",
+        "phone": "385-549-4194",
         "isAdmin": false,
+        "isClient": false,
         "files": []
-      },
-      {
-        "_id": "62c243082819fd97bed20b5a",
-        "firstName": "jill",
-        "lastName": "jones",
-        "phone": "123-456-7890",
-        "descriptionText": "this is updated jill jones",
-        "email": "JJillthe@jones.com",
-        "password": "$2b$11$oJbWx1O6LKUcliMtNK2riOvwyK0480vfZ9vKEnXahYbbRGMFDs/hS",
-        "isAdmin": false,
-        "files": []
-      },
-      {
-        "_id": "62c2457b2819fd97bed20b62",
-        "firstName": "Till",
-        "lastName": "Mones",
-        "phone": "1 (888) 549-4194",
-        "descriptionText": "this is Till I want an awesome App Sebastian!",
-        "email": "Till@Mones.com",
-        "password": "$2b$11$Rpfp2VHm.gHulm42mljKLuG6gyxztXRs9AOubl9DLCym91LopkaUK",
-        "isAdmin": false,
-        "files": []
-      },
-      {
-        "_id": "62c245ae2819fd97bed20b64",
-        "firstName": "ill",
-        "lastName": "Mones",
-        "phone": "1 (888) 5494194",
-        "descriptionText": "this is Till I want an awesome App Sebastian!",
-        "email": "ill@Mones.com",
-        "password": "$2b$11$XhiD25XRSQqaiCD.IeqDj.AVdWzqJEOGvD1uCne7k01npTJS384jG",
-        "isAdmin": false,
-        "files": []
-      },
-      {
-        "_id": "62c245e62819fd97bed20b66",
-        "firstName": "ll",
-        "lastName": "Mones",
-        "phone": "1 888 5494194",
-        "descriptionText": "this is Till I want an awesome App Sebastian!",
-        "email": "ll@Mones.com",
-        "password": "$2b$11$xfzTQl4aBqCqW0fiejzRx.IZvBNp4kgNvzReFB8f6yDp6RtLSCT02",
-        "isAdmin": false,
-        "files": []
-      },
-      {
-        "_id": "62c246122819fd97bed20b68",
-        "firstName": "jl",
-        "lastName": "Mones",
-        "phone": "18885494194",
-        "descriptionText": "this is Till I want an awesome App Sebastian!",
-        "email": "jj@Mones.com",
-        "password": "$2b$11$Yhdvm..mhqN3C1UXnpgQXeSl7sO/PJkamY49WQ.aA6xcTYtyom/c.",
-        "isAdmin": false,
-        "files": []
-      },
-      {
-        "_id": "62c246242819fd97bed20b6a",
-        "firstName": "j",
-        "lastName": "Mones",
-        "phone": "188854944",
-        "descriptionText": "this is Till I want an awesome App Sebastian!",
-        "email": "j@Mones.com",
-        "password": "$2b$11$eP6Ow59W4lWOfnE13e/ZDuKhreM0QjhoSSbT7QbkxXUJxbAxxg3h2",
-        "isAdmin": false,
-        "files": []
-      },
-      {
-        "_id": "62c2491581b948bcb8911e7c",
-        "firstName": "tj",
-        "lastName": "Mones",
-        "phone": "8885494194",
-        "descriptionText": "this is Till I want an awesome App Sebastian!",
-        "email": "tj@Mones.com",
-        "password": "$2b$11$pP7ZiSxHm8d.nRWiAtOrm.kfF45aIcvkcJoVkpi/yOHidenKwh50y",
-        "isAdmin": false,
-        "files": []
-      },
-      {
-        "_id": "62c24a5bf592aad4d04e5381",
-        "firstName": "thh",
-        "lastName": "Mones",
-        "phone": "(888) 549 4194",
-        "descriptionText": "this is Till I want an awesome App Sebastian!",
-        "email": "thh@Mones.com",
-        "password": "$2b$11$toIWez8spB6p934hPibWG.D5RPIfPFmDvog3X/LQZiV4x3UtdU1OC",
-        "isAdmin": false,
-        "files": []
-      },
+      }
+    }
+  }
+}
      
       
 */
