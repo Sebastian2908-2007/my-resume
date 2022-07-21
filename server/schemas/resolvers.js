@@ -8,7 +8,6 @@ const resolvers = {
     Query: {
         getContacts: async (parent, {firstName}, context) => {
             if (context.user.isAdmin) {
-                 console.log(context);
                 const params = firstName ? { firstName }: {};
                 return await Contact.find(params).sort({ createdAt: -1 });
                 
@@ -21,7 +20,7 @@ const resolvers = {
         addContact: async (parent,args) => {
             const user = await Contact.create(args);
             const token = signToken(user);
-            console.log(contactToken);
+            
             /**token name below must be the same in contactAuth type in type defs always else the token will return null */
             return { user,token };
         },
@@ -68,7 +67,7 @@ const resolvers = {
              throw new AuthenticationError('No permissions');
         },
         singleFileUpload: async (parent, {ETag, Location, key, Key, Bucket}, context) => {
-          //if(context.user) {
+          if(context.user) {
          const newFile = await FileUpload.create({
           ETag: ETag,
           Location: Location,
@@ -76,8 +75,14 @@ const resolvers = {
           Key: Key, 
           Bucket: Bucket
          });
-         return newFile;
-        //}
+         // push file upload to the current user
+         const updatedContact = await Contact.findByIdAndUpdate(
+             {_id: context.user._id },
+             { $push: {pictures:  newFile } },
+             { new: true, runValidators: true }
+         );
+           return updatedContact;
+        }
         throw new AuthenticationError('No permissions');
        
         }
@@ -106,6 +111,23 @@ admin info
   }
 }
 *******regular user I use***************
+{
+  "data": {
+    "addContact": {
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImZpcnN0TmFtZSI6InVwbG9hZCIsImxhc3ROYW1lIjoiY29udGFjdCIsImVtYWlsIjoidXBsMkBlbWFpbC5jb20iLCJpc0FkbWluIjpmYWxzZSwiX2lkIjoiNjJkOTcxMzE5Zjc0YTU1Y2ZkYjE4MTkyIn0sImlhdCI6MTY1ODQxNzQ1NywiZXhwIjoxNjU4NDMxODU3fQ.LVZc_EvpYJNypF-keXv6alW0ML0_-GcHqiN8sN6ysws",
+      "user": {
+        "firstName": "upload",
+        "lastName": "contact",
+        "email": "upl2@email.com",
+        "password": "$2b$11$r1Q4HY1KFXdgFEkTWjY/le8H.cLOGxprS2AYrlxbbfIw17TGhMAQ.",
+        "descriptionText": "this will be first to add picture to data!",
+        "phone": "385-549-4194",
+        "isAdmin": false,
+        "pictures": []
+      }
+    }
+  }
+}
 
 LOGIN PASS: Contactauth88#
 
