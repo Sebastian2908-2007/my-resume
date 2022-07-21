@@ -21,7 +21,7 @@ const typeDefs = gql`
     descriptionText: String
     phone: String
     isAdmin: Boolean
-    pictures: [FileUpload]
+    files: [FileUpload]
   }
 
   type ContactAuth {
@@ -39,7 +39,33 @@ const typeDefs = gql`
    updateContact(contactId: ID!, firstName: String, lastName: String, email: String, descriptionText: String, phone: String): Contact
    deleteContact(contactId: ID!): Contact
    singleFileUpload(ETag:String, Location:String, key:String, Key:String, Bucket:String): Contact 
+   removeFileById(fileId: ID!): Contact
   }
 `;
 
 module.exports = typeDefs;
+
+/*
+{
+  "data": {
+    "singleFileUpload": {
+      "_id": "62d971319f74a55cfdb18192",
+      "firstName": "upload",
+      "lastName": "contact",
+      "descriptionText": "this will be first to add picture to data!",
+      "email": "upl2@email.com",
+      "phone": "385-549-4194",
+      "files": [
+        {
+          "_id": "62d996a5113f9ed52ff1dad4",
+          "ETag": "mytag83",
+          "Bucket": "88my Great WORKING Bucket",
+          "key": "88WORKINGpic.png",
+          "Key": "88WORKINGNewpic.png",
+          "Location": "https//:workingpic.com/pic"
+        }
+      ]
+    }
+  }
+}
+*/

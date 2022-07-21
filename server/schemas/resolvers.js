@@ -78,13 +78,25 @@ const resolvers = {
          // push file upload to the current user
          const updatedContact = await Contact.findByIdAndUpdate(
              {_id: context.user._id },
-             { $push: {pictures:  newFile } },
+             { $push: {files:  newFile } },
              { new: true, runValidators: true }
          );
            return updatedContact;
         }
         throw new AuthenticationError('No permissions');
        
+        },
+        removeFileById: async (parent, {fileId},context) => {
+          if (context.user) {
+            console.log(fileId);
+            const contact = await Contact.findByIdAndUpdate(
+              {_id: context.user._id},
+              {$pull: {files: {_id: fileId }}},
+              {new: true}
+              );
+           return contact;
+          }
+          throw new AuthenticationError('no permissions');
         }
     }
 };
@@ -123,7 +135,7 @@ admin info
         "descriptionText": "this will be first to add picture to data!",
         "phone": "385-549-4194",
         "isAdmin": false,
-        "pictures": []
+        "files": []
       }
     }
   }
@@ -144,7 +156,7 @@ LOGIN PASS: Contactauth88#
         "email": "bill@jones.com",
         "password": null,
         "isAdmin": false,
-        "pictures": []
+        "files": []
       },
       {
         "_id": "62c243082819fd97bed20b5a",
@@ -155,7 +167,7 @@ LOGIN PASS: Contactauth88#
         "email": "JJillthe@jones.com",
         "password": "$2b$11$oJbWx1O6LKUcliMtNK2riOvwyK0480vfZ9vKEnXahYbbRGMFDs/hS",
         "isAdmin": false,
-        "pictures": []
+        "files": []
       },
       {
         "_id": "62c2457b2819fd97bed20b62",
@@ -166,7 +178,7 @@ LOGIN PASS: Contactauth88#
         "email": "Till@Mones.com",
         "password": "$2b$11$Rpfp2VHm.gHulm42mljKLuG6gyxztXRs9AOubl9DLCym91LopkaUK",
         "isAdmin": false,
-        "pictures": []
+        "files": []
       },
       {
         "_id": "62c245ae2819fd97bed20b64",
@@ -177,7 +189,7 @@ LOGIN PASS: Contactauth88#
         "email": "ill@Mones.com",
         "password": "$2b$11$XhiD25XRSQqaiCD.IeqDj.AVdWzqJEOGvD1uCne7k01npTJS384jG",
         "isAdmin": false,
-        "pictures": []
+        "files": []
       },
       {
         "_id": "62c245e62819fd97bed20b66",
@@ -188,7 +200,7 @@ LOGIN PASS: Contactauth88#
         "email": "ll@Mones.com",
         "password": "$2b$11$xfzTQl4aBqCqW0fiejzRx.IZvBNp4kgNvzReFB8f6yDp6RtLSCT02",
         "isAdmin": false,
-        "pictures": []
+        "files": []
       },
       {
         "_id": "62c246122819fd97bed20b68",
@@ -199,7 +211,7 @@ LOGIN PASS: Contactauth88#
         "email": "jj@Mones.com",
         "password": "$2b$11$Yhdvm..mhqN3C1UXnpgQXeSl7sO/PJkamY49WQ.aA6xcTYtyom/c.",
         "isAdmin": false,
-        "pictures": []
+        "files": []
       },
       {
         "_id": "62c246242819fd97bed20b6a",
@@ -210,7 +222,7 @@ LOGIN PASS: Contactauth88#
         "email": "j@Mones.com",
         "password": "$2b$11$eP6Ow59W4lWOfnE13e/ZDuKhreM0QjhoSSbT7QbkxXUJxbAxxg3h2",
         "isAdmin": false,
-        "pictures": []
+        "files": []
       },
       {
         "_id": "62c2491581b948bcb8911e7c",
@@ -221,7 +233,7 @@ LOGIN PASS: Contactauth88#
         "email": "tj@Mones.com",
         "password": "$2b$11$pP7ZiSxHm8d.nRWiAtOrm.kfF45aIcvkcJoVkpi/yOHidenKwh50y",
         "isAdmin": false,
-        "pictures": []
+        "files": []
       },
       {
         "_id": "62c24a5bf592aad4d04e5381",
@@ -232,7 +244,7 @@ LOGIN PASS: Contactauth88#
         "email": "thh@Mones.com",
         "password": "$2b$11$toIWez8spB6p934hPibWG.D5RPIfPFmDvog3X/LQZiV4x3UtdU1OC",
         "isAdmin": false,
-        "pictures": []
+        "files": []
       },
      
       

@@ -43,7 +43,7 @@ const contactSchema = new Schema({
     type: Boolean,
     default: false
   },
-  pictures: [FileUpload.schema]
+  files: [FileUpload.schema]
 });
 
 /*set up hook to set admin boolean to true if correct email is entered on create, this should work well */
