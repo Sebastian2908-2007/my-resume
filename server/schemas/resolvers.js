@@ -14,6 +14,9 @@ const resolvers = {
                
             }
             throw new AuthenticationError('No permissions');
+        },
+        getReviews: async (parent,args) => {
+          return await Review.find().sort({createdAt: -1});
         }
     },
     Mutation: {
@@ -104,6 +107,25 @@ const resolvers = {
             return review;
           }
           throw new AuthenticationError('you must be a paying customer to leave a review');
+        },
+        updateReview: async (parent, {reviewId, reviewText}, context) => {
+          if(context.user.isClient) {
+            const review = await Review.findOne({_id: reviewId});
+            if(context.user.lastName ===  review.lastName) {
+              await review.updateOne({reviewText: reviewText},{new: true});
+             return review;
+            }
+          throw new AuthenticationError('you must be a client and have submitted this review to update it'); 
+          }
+          throw new AuthenticationError('you must be a client and have submitted this review to update it');
+        },
+        deleteReview: async (parent,{reviewId},context) => {
+          const review = await Review.findOne({_id: reviewId});
+            if(context.user.isClient && context.user.lastName === review.lastName) {
+               review.deleteOne();
+               return true;
+            }
+            throw new AuthenticationError('you must be a client and have submitted this review to delete it')
         }
     }
 };

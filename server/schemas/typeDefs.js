@@ -39,6 +39,7 @@ const typeDefs = gql`
 
   type Query {
    getContacts(firstName: String): [Contact]
+   getReviews: [Review]
   }  
 
   type Mutation {
@@ -49,6 +50,8 @@ const typeDefs = gql`
    singleFileUpload(ETag:String, Location:String, key:String, Key:String, Bucket:String): Contact 
    removeFileById(fileId: ID!): Contact
    addReview(reviewText: String!, firstName: String!, lastName: String!): Review
+   updateReview(reviewId: ID!, reviewText: String!): Review
+   deleteReview(reviewId: ID!): Boolean!
   }
 `;
 
@@ -56,9 +59,10 @@ module.exports = typeDefs;
 
 /*
 {
+ {
   "data": {
     "loginContact": {
-      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImZpcnN0TmFtZSI6IlJlYWwiLCJsYXN0TmFtZSI6IkNsaWVudCIsImVtYWlsIjoiYUNsaWVudEBlbWFpbC5jb20iLCJpc0FkbWluIjpmYWxzZSwiaXNDbGllbnQiOnRydWUsIl9pZCI6IjYyZDlkMzJhYmVlNmQ3NGU0N2E1OWMyZCJ9LCJpYXQiOjE2NTg0NDI5MjAsImV4cCI6MTY1ODQ1NzMyMH0.8xWCjJqVe3IPCDCmtu1tWynn3rtj2pr-_cLhqKkV3to",
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImZpcnN0TmFtZSI6IlJlYWwiLCJsYXN0TmFtZSI6IkNsaWVudCIsImVtYWlsIjoiYUNsaWVudEBlbWFpbC5jb20iLCJpc0FkbWluIjpmYWxzZSwiaXNDbGllbnQiOnRydWUsIl9pZCI6IjYyZDlkMzJhYmVlNmQ3NGU0N2E1OWMyZCJ9LCJpYXQiOjE2NTg0NjIyMzYsImV4cCI6MTY1ODQ3NjYzNn0.cFs0bGB9tjZxmpTwF6eMCqhmPcmLcugwfusul3RToCo",
       "user": {
         "_id": "62d9d32abee6d74e47a59c2d",
         "email": "aClient@email.com",
@@ -69,6 +73,33 @@ module.exports = typeDefs;
         "isAdmin": false
       }
     }
+  }
+}
+ {
+  "data": {
+    "getReviews": [
+      {
+        "_id": "62da1524fa23b842ac40bbab",
+        "createdAt": "1658459428568",
+        "firstName": "Real",
+        "lastName": "Client",
+        "reviewText": "This should be the review I edit!"
+      },
+      {
+        "_id": "62da1358505aa1e2bec3c5a0",
+        "createdAt": "1658458968172",
+        "firstName": "Real",
+        "lastName": "Client",
+        "reviewText": "updated review"
+      },
+      {
+        "_id": "62d9d804db5ae35bdc177e1d",
+        "createdAt": "1658443780212",
+        "firstName": "Zeb",
+        "lastName": "Bower",
+        "reviewText": "This is the first review"
+      }
+    ]
   }
 }
 */
