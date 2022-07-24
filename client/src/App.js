@@ -4,6 +4,7 @@ import { InMemoryCache } from '@apollo/client/cache'
 import { setContext } from '@apollo/client/link/context';
 import TestUpload from './TestUpload';
 import { onError } from "@apollo/client/link/error";
+import Header from './components/Header';
 
 // this actually gets me to the auth link I think
 /*const cleanTypeName = new ApolloLink((operation, forward) => {
@@ -54,8 +55,9 @@ function App() {
   return (
     <ApolloProvider client={client}>
       <Router>
+        <Header/>
       <Routes>
- <Route exact path="/" element={ <TestUpload /> }/>
+ <Route exact path="/" element={ <TestUpload/> }/>
      </Routes>
       </Router>
     </ApolloProvider>
@@ -63,3 +65,11 @@ function App() {
 }
 
 export default App;
+
+/**
+ * colors im gonna use
+ .dark-blue {color: #213159}
+.sky-blue {color: #3d6098}
+.sexy-red {color: #f04b4c}
+.fresh-grey {color: #e7e7e7}
+ */
