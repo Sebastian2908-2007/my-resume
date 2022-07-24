@@ -5,6 +5,7 @@ import { setContext } from '@apollo/client/link/context';
 import TestUpload from './TestUpload';
 import { onError } from "@apollo/client/link/error";
 import Header from './components/Header';
+import Footer from './components/Footer';
 
 // this actually gets me to the auth link I think
 /*const cleanTypeName = new ApolloLink((operation, forward) => {
@@ -59,6 +60,7 @@ function App() {
       <Routes>
  <Route exact path="/" element={ <TestUpload/> }/>
      </Routes>
+     <Footer></Footer>
       </Router>
     </ApolloProvider>
   );
